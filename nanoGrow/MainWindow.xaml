@@ -1,0 +1,101 @@
+﻿<Window x:Class="nanoGrow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:nanoGrow"
+        mc:Ignorable="d"
+        Title="My Pet Dashboard" Height="500" Width="320">
+    <Window.Resources>
+        <Style x:Key="ImageButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="My Pet" FontSize="20" HorizontalAlignment="Center" Margin="10"/>
+
+        <Image x:Name="CharacterImage" 
+               HorizontalAlignment="Left" VerticalAlignment="Top" 
+               Width="200" Height="200"
+               Source="{Binding CurrentImagePath}" Margin="58,6,0,0" Grid.Row="1" />
+
+        <Grid Grid.Row="2" Margin="20,10,20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Image Grid.Row="0" Grid.Column="0" Source="/Images/button_feed.png" Width="25" Height="25" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                <Rectangle Height="8" Fill="LightGray" RadiusX="4" RadiusY="4" />
+                <Rectangle Width="{Binding Hunger}" Height="8" Fill="#FF4CAF50" RadiusX="4" RadiusY="4" HorizontalAlignment="Left" />
+            </Grid>
+            <Image Grid.Row="1" Grid.Column="0" Source="/Images/button_clean.png" Width="25" Height="25" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                <Rectangle Height="8" Fill="LightGray" RadiusX="4" RadiusY="4" />
+                <Rectangle Width="{Binding Cleanliness}" Height="8" Fill="#FF2196F3" RadiusX="4" RadiusY="4" HorizontalAlignment="Left" />
+            </Grid>
+            <Image Grid.Row="2" Grid.Column="0" Source="/Images/button_wash.png" Width="25" Height="25" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <Grid Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+                <Rectangle Height="8" Fill="LightGray" RadiusX="4" RadiusY="4" />
+                <Rectangle Width="{Binding Wash}" Height="8" Fill="#FFFFEB3B" RadiusX="4" RadiusY="4" HorizontalAlignment="Left" />
+            </Grid>
+            <Image Grid.Row="3" Grid.Column="0" Source="/Images/button_sleep.png" Width="25" Height="25" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <Grid Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
+                <Rectangle Height="8" Fill="LightGray" RadiusX="4" RadiusY="4" />
+                <Rectangle Width="{Binding Sleep}" Height="8" Fill="#FFFF9800" RadiusX="4" RadiusY="4" HorizontalAlignment="Left" />
+            </Grid>
+            <Image Grid.Row="4" Grid.Column="0" Source="/Images/button_play.png" Width="25" Height="25" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <Grid Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">
+                <Rectangle Height="8" Fill="LightGray" RadiusX="4" RadiusY="4" />
+                <Rectangle Width="{Binding Play}" Height="8" Fill="#FFE91E63" RadiusX="4" RadiusY="4" HorizontalAlignment="Left" />
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,10,20">
+            <Button Style="{StaticResource ImageButtonStyle}" Width="45" Height="45" Margin="5" Click="FeedButton_Click">
+                <Image Source="/Images/button_feed.png" />
+            </Button>
+            <Button Style="{StaticResource ImageButtonStyle}" Width="45" Height="45" Margin="5" Click="CleanButton_Click">
+                <Image Source="/Images/button_clean.png" />
+            </Button>
+            <Button Style="{StaticResource ImageButtonStyle}" Width="45" Height="45" Margin="5" Click="WashButton_Click">
+                <Image Source="/Images/button_wash.png" />
+            </Button>
+            <Button Style="{StaticResource ImageButtonStyle}" Width="45" Height="45" Margin="5" Click="SleepButton_Click">
+                <Image Source="/Images/button_sleep.png" />
+            </Button>
+            <Button Style="{StaticResource ImageButtonStyle}" Width="45" Height="45" Margin="5" Click="PlayButton_Click">
+                <Image Source="/Images/button_play.png" />
+            </Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button x:Name="SettingsButton" Content="⚙️" Margin="5" Width="30" Height="30" FontSize="16" Click="SettingsButton_Click"/>
+            <Button x:Name="PinButton" Content="📌" Margin="5" Width="30" Height="30" FontSize="16" Click="PinButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

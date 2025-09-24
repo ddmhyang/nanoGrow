@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nanoGrow", "nanoGrow\nanoGrow.csproj", "{451D27FD-05B4-4D17-B55E-0585E352FFC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{451D27FD-05B4-4D17-B55E-0585E352FFC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{451D27FD-05B4-4D17-B55E-0585E352FFC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{451D27FD-05B4-4D17-B55E-0585E352FFC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{451D27FD-05B4-4D17-B55E-0585E352FFC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25EEC16E-1F9A-4869-A0B2-BB59190BC81A}
+	EndGlobalSection
+EndGlobal
