@@ -5,14 +5,11 @@ namespace nanoGrow
     public class AnimationData
     {
         public Dictionary<string, List<string>> AnimationPaths { get; set; }
-        // BackgroundImagePath는 더 이상 필요 없으므로 삭제합니다.
-        // public string BackgroundImagePath { get; set; }
 
         public AnimationData()
         {
             AnimationPaths = new Dictionary<string, List<string>>
             {
-                // ## PetState enum과 이름 및 대소문자를 일치시킵니다. ##
                 { "Idle", new List<string>() },
                 { "Eating", new List<string>() },
                 { "Cleaning", new List<string>() },
@@ -24,6 +21,30 @@ namespace nanoGrow
                 { "MovingRight", new List<string>() },
                 { "Background", new List<string>() }
             };
+        }
+
+        // ## 이 함수가 핵심입니다! ##
+        public List<string> GetPathsForState(PetState state)
+        {
+            string stateKey = state.ToString();
+
+            // 1. 사용자 설정에 유효한 경로가 있는지 확인
+            if (AnimationPaths.TryGetValue(stateKey, out List<string>? customPaths) && customPaths.Count > 0 && !string.IsNullOrEmpty(customPaths[0]))
+            {
+                return customPaths; // 있으면 사용자 설정 경로 반환
+            }
+
+            // 2. 없으면, 상태에 맞는 기본 경로를 반환
+            switch (stateKey)
+            {
+                case "MovingLeft":
+                    return new List<string> { "/Images/move_left1.png", "/Images/move_left2.png" };
+                case "MovingRight":
+                    return new List<string> { "/Images/move_right1.png", "/Images/move_right2.png" };
+                case "Idle":
+                default: // Idle 및 기타 모든 미설정 상태는 Idle 기본 애니메이션을 보여줌
+                    return new List<string> { "/Images/pet_idle.png", "/Images/pet_idle2.png" };
+            }
         }
     }
 }

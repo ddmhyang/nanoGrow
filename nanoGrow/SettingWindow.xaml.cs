@@ -20,8 +20,10 @@ namespace nanoGrow
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             var settingsManager = new SettingsManager();
-            var animationData = new AnimationData();
+            // ## 여기가 핵심! 새 객체 대신 기존 설정을 불러옵니다. ##
+            var animationData = settingsManager.LoadSettings();
 
+            // ViewModel의 현재 데이터를 실제 저장용 데이터 형식으로 변환하여 덮어씁니다.
             foreach (var state in _viewModel.AllStates)
             {
                 if (state is StandardStateViewModel standard)
@@ -43,6 +45,7 @@ namespace nanoGrow
             this.Close();
         }
 
+        // ... Browse_Click 및 OpenImageFile 함수는 이전과 동일 ...
         private void Browse_Click(object sender, RoutedEventArgs e)
         {
             if (_viewModel.SelectedState == null) return;
