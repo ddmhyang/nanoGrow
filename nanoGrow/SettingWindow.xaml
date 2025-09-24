@@ -27,30 +27,7 @@
                 </Border>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type local:MoveStateViewModel}">
-            <StackPanel>
-                <Label Content="왼쪽 이동 이미지 1:" />
-                <DockPanel>
-                    <Button Tag="LeftPath1" Content="찾아보기..." DockPanel.Dock="Right" Margin="5,0,0,0" Click="Browse_Click" />
-                    <TextBox Text="{Binding LeftPath1, UpdateSourceTrigger=PropertyChanged}"/>
-                </DockPanel>
-                <Label Content="왼쪽 이동 이미지 2:" Margin="0,5,0,0"/>
-                <DockPanel>
-                    <Button Tag="LeftPath2" Content="찾아보기..." DockPanel.Dock="Right" Margin="5,0,0,0" Click="Browse_Click" />
-                    <TextBox Text="{Binding LeftPath2, UpdateSourceTrigger=PropertyChanged}"/>
-                </DockPanel>
-                <Label Content="오른쪽 이동 이미지 1:" Margin="0,10,0,0"/>
-                <DockPanel>
-                    <Button Tag="RightPath1" Content="찾아보기..." DockPanel.Dock="Right" Margin="5,0,0,0" Click="Browse_Click" />
-                    <TextBox Text="{Binding RightPath1, UpdateSourceTrigger=PropertyChanged}"/>
-                </DockPanel>
-                <Label Content="오른쪽 이동 이미지 2:" Margin="0,5,0,0"/>
-                <DockPanel>
-                    <Button Tag="RightPath2" Content="찾아보기..." DockPanel.Dock="Right" Margin="5,0,0,0" Click="Browse_Click" />
-                    <TextBox Text="{Binding RightPath2, UpdateSourceTrigger=PropertyChanged}"/>
-                </DockPanel>
-            </StackPanel>
-        </DataTemplate>
+
         <DataTemplate DataType="{x:Type local:BackgroundStateViewModel}">
             <StackPanel>
                 <Label Content="배경 이미지 경로:" />
@@ -64,12 +41,13 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
+
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TabControl Grid.Column="0" TabStripPlacement="Left" BorderThickness="0,0,1,0" BorderBrush="LightGray"
+        <TabControl Grid.Column="0" Name="MainTabControl" TabStripPlacement="Left" BorderThickness="0,0,1,0" BorderBrush="LightGray"
                     ItemsSource="{Binding AllStates}"
                     SelectedItem="{Binding SelectedState}"
                     DisplayMemberPath="Name" />

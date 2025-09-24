@@ -1,29 +1,29 @@
 ﻿using System.Collections.Generic;
 
-namespace nanoGrow // 실제 프로젝트 이름에 맞춰주세요.
+namespace nanoGrow
 {
     public class AnimationData
     {
-        // {"idle", ["path1.png", "path2.png"]}, {"fly", ["path3.png", "path4.png"]} ...
         public Dictionary<string, List<string>> AnimationPaths { get; set; }
-
-        public string BackgroundImagePath { get; set; } // 배경 이미지 경로 추가
+        // BackgroundImagePath는 더 이상 필요 없으므로 삭제합니다.
+        // public string BackgroundImagePath { get; set; }
 
         public AnimationData()
         {
             AnimationPaths = new Dictionary<string, List<string>>
             {
-                { "idle", new List<string>() },
-                { "fly", new List<string>() },
-                { "sleep", new List<string>() },
-                { "eat", new List<string>() },
-                { "play", new List<string>() },
-                { "movingleft", new List<string>() },
-                { "movingright", new List<string>() },
-                { "wash", new List<string>() },
-                { "background", new List<string>() } // background 키 추가
+                // ## PetState enum과 이름 및 대소문자를 일치시킵니다. ##
+                { "Idle", new List<string>() },
+                { "Eating", new List<string>() },
+                { "Cleaning", new List<string>() },
+                { "Washing", new List<string>() },
+                { "Sleeping", new List<string>() },
+                { "Playing", new List<string>() },
+                { "Flying", new List<string>() },
+                { "MovingLeft", new List<string>() },
+                { "MovingRight", new List<string>() },
+                { "Background", new List<string>() }
             };
-            // BackgroundImagePath 속성은 이제 AnimationPaths["background"]에 통합되므로 삭제해도 됩니다.
         }
     }
 }

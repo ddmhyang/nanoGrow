@@ -1,6 +1,7 @@
 ﻿using nanoGrow;
 using System;
 using System.Collections.Generic;
+using System.IO; // File.Exists를 위해 추가
 using System.Windows;
 using System.Windows.Threading;
 
@@ -23,22 +24,12 @@ namespace nanoGrow
         public MainWindow()
         {
             InitializeComponent();
-
-            // ## 1. 데이터 로드를 가장 먼저 수행합니다. ##
             LoadedAnimations = App.UserSettings;
             CurrentStatus = new PetStatus();
-
-            // ## 2. 첫 이미지를 미리 설정합니다. ##
-            // LoadedAnimations 데이터와 CurrentStatus 데이터를 모두 사용해서 첫 이미지를 결정합니다.
             UpdateCharacterImage();
-
-            // ## 3. 데이터 컨텍스트를 마지막에 연결합니다. ##
             this.DataContext = CurrentStatus;
-
-            // --- 나머지 초기화 코드는 동일 ---
             _characterWindow = new CharacterWindow(this);
             _lastTickTime = DateTime.Now;
-
             InitializeGameTimer();
             InitializeAnimationTimer();
         }
@@ -57,7 +48,6 @@ namespace nanoGrow
             _animationTimer.Interval = TimeSpan.FromMilliseconds(500);
             _animationTimer.Tick += AnimationTimer_Tick;
             _animationTimer.Start();
-
             _actionStateTimer = new DispatcherTimer();
             _actionStateTimer.Interval = TimeSpan.FromSeconds(3);
             _actionStateTimer.Tick += (s, e) =>
@@ -65,6 +55,59 @@ namespace nanoGrow
                 CurrentStatus.CurrentState = PetState.Idle;
                 _actionStateTimer.Stop();
             };
+        }
+
+
+        // ... (UpdateTimerInterval, GameTimer_Tick, AnimationTimer_Tick은 이전과 동일) ...
+
+        private void UpdateCharacterImage()
+        {
+            // .ToLower()를 제거하여 "MovingLeft"처럼 대소문자를 유지합니다.
+            string stateKey = CurrentStatus.CurrentState.ToString();
+            List<string> imagePathsToAnimate;
+
+            if (LoadedAnimations.AnimationPaths.TryGetValue(stateKey, out List<string> customPaths) && customPaths.Count > 0 && !string.IsNullOrEmpty(customPaths[0]))
+            {
+                imagePathsToAnimate = customPaths;
+            }
+            else
+            {
+                switch (stateKey)
+                {
+                    // 키 이름을 대소문자까지 정확하게 맞춰줍니다.
+                    case "MovingLeft":
+                        imagePathsToAnimate = new List<string> { "/Images/move_left1.png", "/Images/move_left2.png" };
+                        break;
+                    case "MovingRight":
+                        imagePathsToAnimate = new List<string> { "/Images/move_right1.png", "/Images/move_right2.png" };
+                        break;
+                    default:
+                        imagePathsToAnimate = new List<string> { "/Images/pet_idle.png", "/Images/pet_idle2.png" };
+                        break;
+                }
+            }
+
+            if (imagePathsToAnimate != null && imagePathsToAnimate.Count > 0)
+            {
+                _currentFrameIndex = (_currentFrameIndex + 1) % imagePathsToAnimate.Count;
+                CurrentStatus.CurrentImagePath = imagePathsToAnimate[_currentFrameIndex];
+            }
+        }
+
+        // ... (SetTemporaryState 및 Feed, Clean, Wash, Sleep, Play 버튼 클릭 이벤트는 이전과 동일) ...
+
+        private void PinButton_Click(object sender, RoutedEventArgs e)
+        {
+            _characterWindow.Show();
+            this.Hide();
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            _settingWindow = new SettingWindow();
+            _settingWindow.ShowDialog();
+            LoadedAnimations = App.UserSettings;
+            UpdateCharacterImage();
         }
 
         private void UpdateTimerInterval()
@@ -95,42 +138,6 @@ namespace nanoGrow
         {
             UpdateCharacterImage();
         }
-
-        // MainWindow.xaml.cs 안의 UpdateCharacterImage 함수
-        private void UpdateCharacterImage()
-        {
-            string stateKey = CurrentStatus.CurrentState.ToString().ToLower();
-            List<string> imagePathsToAnimate;
-
-            if (LoadedAnimations.AnimationPaths.TryGetValue(stateKey, out List<string> customPaths) && customPaths.Count > 0 && !string.IsNullOrEmpty(customPaths[0]))
-            {
-                imagePathsToAnimate = customPaths;
-            }
-            else
-            {
-                switch (stateKey)
-                {
-                    // ## 이 부분을 수정합니다 ##
-                    case "movingleft":
-                        imagePathsToAnimate = new List<string> { "/Images/move_left1.png", "/Images/move_left2.png" };
-                        break;
-                    case "movingright":
-                        imagePathsToAnimate = new List<string> { "/Images/move_right1.png", "/Images/move_right2.png" };
-                        break;
-                    default:
-                        imagePathsToAnimate = new List<string> { "/Images/pet_idle.png", "/Images/pet_idle2.png" };
-                        break;
-                }
-            }
-
-            if (imagePathsToAnimate != null && imagePathsToAnimate.Count > 0)
-            {
-                _currentFrameIndex = (_currentFrameIndex + 1) % imagePathsToAnimate.Count;
-                CurrentStatus.CurrentImagePath = imagePathsToAnimate[_currentFrameIndex];
-            }
-        }
-
-
         private void SetTemporaryState(PetState state)
         {
             CurrentStatus.CurrentState = state;
@@ -146,7 +153,6 @@ namespace nanoGrow
         private void CleanButton_Click(object sender, RoutedEventArgs e)
         {
             CurrentStatus.Cleanliness = Math.Min(100, CurrentStatus.Cleanliness + 10);
-            // 'Cleaning' 상태를 잠시 재생하도록 수정
             SetTemporaryState(PetState.Cleaning);
         }
         private void WashButton_Click(object sender, RoutedEventArgs e)
@@ -163,18 +169,6 @@ namespace nanoGrow
         {
             CurrentStatus.Play = Math.Min(100, CurrentStatus.Play + 10);
             SetTemporaryState(PetState.Playing);
-        }
-
-        private void PinButton_Click(object sender, RoutedEventArgs e)
-        {
-            _characterWindow.Show();
-            this.Hide();
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            _settingWindow = new SettingWindow();
-            _settingWindow.ShowDialog();
         }
     }
 }
